@@ -1,20 +1,44 @@
-#define pinSentido1MotorA 3
-#define pinSentido2MotorA 2
+#define pinoSentido1MotorA 3
+#define pinoSentido2MotorA 2
+#define pinoSentido1MotorB 1
+#define pinoSentido2MotorB 0
+#define pinoEchoUltrassom 4
+#define pinoTrigUltrassom 5
+#define pinoSensorIRFrontal A0
 
-#define pinSentido1MotorB 7
-#define pinSentido2MotorB 6
+#define fatorParaCm 58
+
+double distancia = 0;
 
 void setup() {
-  pinMode(pinSentido1MotorA, OUTPUT);
-  pinMode(pinSentido2MotorA, OUTPUT);
-  pinMode(pinSentido1MotorB, OUTPUT);
-  pinMode(pinSentido2MotorB, OUTPUT);
+  pinMode(pinoSentido1MotorA, OUTPUT);
+  pinMode(pinoSentido2MotorA, OUTPUT);
+  pinMode(pinoSentido1MotorB, OUTPUT);
+  pinMode(pinoSentido2MotorB, OUTPUT);
+  pinMode(pinoEchoUltrassom, INPUT);
+  pinMode(pinoTrigUltrassom, OUTPUT);
+  pinMode(pinoSensorIRFrontal, OUTPUT);
+  Serial.begin(9600);
 }
 
 void loop() {
-  digitalWrite(pinSentido1MotorA, HIGH);
-  digitalWrite(pinSentido2MotorA, LOW);
-  digitalWrite(pinSentido1MotorB, HIGH);
-  digitalWrite(pinSentido2MotorB, LOW);
+  // Ultrassom
+  //digitalWrite(pinoTrigUltrassom, HIGH);
+  //delayMicroseconds(10);
+  //digitalWrite(pinoTrigUltrassom, LOW);
+  //distancia = pulseIn(pinoEchoUltrassom, HIGH);
+  //distancia = distancia / fatorParaCm;
+  //Serial.print(distancia);
+  //Serial.println("cm");
+
+  // Motor
+  //digitalWrite(pinoSentido1MotorA, LOW);
+  //digitalWrite(pinoSentido2MotorA, HIGH);
+  //digitalWrite(pinoSentido1MotorB, LOW);
+  //digitalWrite(pinoSentido2MotorB, HIGH);
+
+  //IR Frontal
+  Serial.println(analogRead(pinoSensorIRFrontal));
+
   delay(255);
 }
