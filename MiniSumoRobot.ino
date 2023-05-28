@@ -1,5 +1,5 @@
-#define pino1MotorDireito 13
-#define pino2MotorDireito 12
+#define pino1MotorDireito 6
+#define pino2MotorDireito 5
 #define pino1MotorEsquerdo 11
 #define pino2MotorEsquerdo 10
 #define pinoEchoUltrassom 9
@@ -82,19 +82,33 @@ void setup() {
 }
 
 void loop() {
-  switch (robotMode) {
-    case 'H': // Hunt
-      huntMode();
-      break;
-    case 'A': // Attack
-      attackMode();
-      break;
-    case 'F': // Flee
-      fleeMode();
-      break;
-    default:
-      huntMode();
-  }
+  MotorDireito.Speed(100);
+  MotorEsquerdo.Speed(100);
+
+  MotorDireito.Forward();
+  MotorEsquerdo.Forward();
+  delay(500);
+
+  MotorDireito.Backward();
+  MotorEsquerdo.Backward();
+  delay(500);
+
+  MotorDireito.Stop();
+  MotorEsquerdo.Stop();
+  delay(500);
+  // switch (robotMode) {
+  //   case 'H': // Hunt
+  //     huntMode();
+  //     break;
+  //   case 'A': // Attack
+  //     attackMode();
+  //     break;
+  //   case 'F': // Flee
+  //     fleeMode();
+  //     break;
+  //   default:
+  //     huntMode();
+  // }
 }
 
 /**
