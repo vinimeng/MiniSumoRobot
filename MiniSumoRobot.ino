@@ -79,36 +79,28 @@ void setup() {
 
   // Serial para debugger
   Serial.begin(9600);
+
+  // 5 segundos antes de começar conforme regras
+  //delay(5000);
 }
 
 void loop() {
-  MotorDireito.Speed(100);
-  MotorEsquerdo.Speed(100);
+  switch (robotMode) {
+    case 'H': // Hunt
+      huntMode();
+      break;
+    case 'A': // Attack
+      attackMode();
+      break;
+    case 'F': // Flee
+      fleeMode();
+      break;
+    default:
+      huntMode();
+  }
 
-  MotorDireito.Forward();
-  MotorEsquerdo.Forward();
-  delay(500);
-
-  MotorDireito.Backward();
-  MotorEsquerdo.Backward();
-  delay(500);
-
-  MotorDireito.Stop();
-  MotorEsquerdo.Stop();
-  delay(500);
-  // switch (robotMode) {
-  //   case 'H': // Hunt
-  //     huntMode();
-  //     break;
-  //   case 'A': // Attack
-  //     attackMode();
-  //     break;
-  //   case 'F': // Flee
-  //     fleeMode();
-  //     break;
-  //   default:
-  //     huntMode();
-  // }
+  Serial.print("Modo do Robo: ");
+  Serial.println(robotMode);
 }
 
 /**
@@ -143,13 +135,25 @@ void attackMode() {
   Fazer com que o robô fuja
 */
 void fleeMode() {
-  // ???
+  if (IRTraseiroDireito() || IRTraseiroEsquerdo()) {
+    rodarParaDireita();
+    delay(100);
+    irParaFrente();
+  } else if (IRFrontal()) {
+    rodarParaEsquerda();
+    delay(100);
+    irParaTras();
+  } else {
+    robotMode = 'H';
+  }
 }
 
 /**
   Fazer com que o robô começa a vá para frente
 */
 void irParaFrente() {
+  MotorDireito.Speed(255);
+  MotorEsquerdo.Speed(200);
   MotorEsquerdo.Forward();
   MotorDireito.Forward();
 }
@@ -158,14 +162,18 @@ void irParaFrente() {
   Fazer com que o robô começa a vá para trás
 */
 void irParaTras() {
-  MotorEsquerdo.Forward();
-  MotorDireito.Forward();
+  MotorDireito.Speed(255);
+  MotorEsquerdo.Speed(200);
+  MotorEsquerdo.Backward();
+  MotorDireito.Backward();
 }
 
 /**
   Fazer com que o robô começa a rodar para a esquerda
 */
 void rodarParaEsquerda() {
+  MotorDireito.Speed(155);
+  MotorEsquerdo.Speed(100);
   MotorEsquerdo.Backward();
   MotorDireito.Forward();
 }
@@ -174,6 +182,8 @@ void rodarParaEsquerda() {
   Fazer com que o robô começa a rodar para a direita
 */
 void rodarParaDireita() {
+  MotorDireito.Speed(155);
+  MotorEsquerdo.Speed(100);
   MotorEsquerdo.Forward();
   MotorDireito.Backward();
 }
@@ -188,7 +198,9 @@ bool ultrassom() {
   digitalWrite(pinoTrigUltrassom, LOW);
   double distancia = pulseIn(pinoEchoUltrassom, HIGH);
   distancia = distancia / fatorParaCm;
-  return distancia < 60;
+  Serial.print("Distancia (cm): ");
+  Serial.println(distancia);
+  return distancia < 40;
 }
 
 /**
