@@ -81,7 +81,7 @@ void setup() {
   Serial.begin(9600);
 
   // 5 segundos antes de começar conforme regras
-  //delay(5000);
+  delay(5000);
 }
 
 void loop() {
@@ -107,10 +107,18 @@ void loop() {
   Fazer com que o robô procure o inimigo
 */
 void huntMode() {
-  if (!ultrassom()) {
-    rodarParaEsquerda();
+  if (IRTraseiroDireito() || IRTraseiroEsquerdo()) {
+    irParaFrente();
+    delay(750);
+  } else if (IRFrontal()) {
+    irParaTras();
+    delay(750);
   } else {
-    robotMode = 'A';
+    if (!ultrassom()) {
+      rodarParaEsquerda();
+    } else {
+      robotMode = 'A';
+    }
   }
 }
 
@@ -137,12 +145,14 @@ void attackMode() {
 void fleeMode() {
   if (IRTraseiroDireito() || IRTraseiroEsquerdo()) {
     rodarParaDireita();
-    delay(100);
+    delay(250);
     irParaFrente();
+    delay(500);
   } else if (IRFrontal()) {
     rodarParaEsquerda();
-    delay(100);
+    delay(250);
     irParaTras();
+    delay(500);
   } else {
     robotMode = 'H';
   }
